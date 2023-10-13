@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite + TS</title>
+  <script type="module" src="/dist/simple-hue-picker.js"></script>
+</head>
+
+<body style="display: flex; gap: 3rem; flex-direction: column; padding: 3rem;">
+  <hue-picker></hue-picker>
+  <hue-picker default-hue="150" onchange="(function(e){console.log(e.detail)})(event)"></hue-picker>
+</body>
+
+</html>
