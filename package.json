@@ -1,6 +1,6 @@
 {
   "name": "simple-hue-picker",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "type": "module",
   "author": "Dan Kozlov <d.kzlv.ru@gmail.com>",
   "license": "MIT",
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node src/compileTemplate.cjs && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

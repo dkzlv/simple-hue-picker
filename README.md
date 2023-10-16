@@ -1,5 +1,7 @@
 # Simple Hue Picker
 
+
+
 # Usage
 
 Since it's a Web Component and not a framework component, it requires some framework-specific treatment. But don't fret, no hacks.
