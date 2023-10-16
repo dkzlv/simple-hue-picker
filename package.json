@@ -1,8 +1,22 @@
 {
   "name": "simple-hue-picker",
-  "private": true,
-  "version": "0.0.0",
+  "version": "0.0.3",
   "type": "module",
+  "author": "Dan Kozlov <d.kzlv.ru@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/simple-hue-picker.umd.cjs",
+  "module": "./dist/simple-hue-picker.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/simple-hue-picker.js",
+      "require": "./dist/simple-hue-picker.umd.cjs"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

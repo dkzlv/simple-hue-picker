@@ -13,7 +13,7 @@ export default defineConfig({
     }),
   ],
   build: {
-    minify: true,
+    minify: false,
     lib: {
       entry: "./src/main.js",
       name: "simple-hue-picker",
