@@ -10,11 +10,11 @@
 
 <body style="display: flex; gap: 3rem; flex-direction: column; padding: 3rem;">
   <hue-picker></hue-picker>
-  <hue-picker step="20" hue="150" onchange="(function(e){console.log(e.detail)})(event)"></hue-picker>
+  <hue-picker step="20" value="150" onchange="(function(e){console.log(e.detail)})(event)"></hue-picker>
 
   <hue-picker id="thirdExample" onchange="(function(e){console.log(e.detail)})(event)"></hue-picker>
   <button
-    onclick="(function(){document.getElementById('thirdExample').setAttribute('hue', Math.random() * 100 + 50)})()">
+    onclick="(function(){document.getElementById('thirdExample').setAttribute('value', Math.random() * 100 + 50)})()">
     Set Hue to random value</button>
   <button
     onclick="(function(){document.getElementById('thirdExample').setAttribute('step', Math.round(Math.random() * 10 + 20))})()">

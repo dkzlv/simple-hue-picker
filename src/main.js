@@ -7,15 +7,32 @@ export class HuePicker extends HTMLElement {
   }
 
   connectedCallback() {
+    this.observer = new MutationObserver(
+      this.handleAttributeChanges.bind(this)
+    );
+    this.observer.observe(this, { attributes: true });
+
     this.render();
     this.attachEventHandlers();
   }
-  static get observedAttributes() {
-    return ["hue", "step"];
+  disconnectedCallback() {
+    // Stop observing
+    this.observer.disconnect();
   }
 
-  attributeChangedCallback(name, _, newValue) {
-    if (name === "hue") this.updateInputValue(newValue);
+  handleAttributeChanges(mutations) {
+    for (const mutation of mutations) {
+      if (mutation.type === "attributes") {
+        const name = mutation.attributeName;
+        const value = this.getAttribute(name);
+        // Now you can handle each attribute generically or delegate to specific handlers
+        this.handleAttributeChange(name, value);
+      }
+    }
+  }
+
+  handleAttributeChange(name, newValue) {
+    if (name === "value") this.updateInputValue(newValue);
     else if (this.inputElement) this.inputElement.setAttribute(name, newValue);
   }
 
@@ -63,7 +80,7 @@ export class HuePicker extends HTMLElement {
     styleElement.textContent = style;
     this.shadowRoot.appendChild(styleElement);
 
-    this.updateInputValue(this.getAttribute("hue") || "0");
+    this.updateInputValue(this.getAttribute("value") || "0");
   }
 
   attachEventHandlers() {
