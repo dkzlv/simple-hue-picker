@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import banner2 from "rollup-plugin-banner2";
 
 export default defineConfig({
   plugins: [
@@ -13,6 +14,12 @@ export default defineConfig({
         },
       ],
     }),
+    {
+      ...banner2((chunk) => {
+        return chunk.name === "react" ? `"use client";` : "";
+      }),
+      apply: "build",
+    },
   ],
   build: {
     minify: true,
