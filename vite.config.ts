@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
 export default defineConfig({
   plugins: [
+    dts(),
     viteStaticCopy({
       targets: [
         {
@@ -13,11 +15,14 @@ export default defineConfig({
     }),
   ],
   build: {
-    minify: false,
+    minify: true,
     lib: {
-      entry: "./src/main.js",
+      entry: ["./src/main.js", "./src/react.ts"],
       name: "simple-hue-picker",
-      fileName: "simple-hue-picker",
+    },
+    rollupOptions: {
+      external: ["react"],
+      output: {},
     },
   },
 });

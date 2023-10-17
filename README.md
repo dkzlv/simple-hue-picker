@@ -1,6 +1,20 @@
 # Simple Hue Picker
 
+A tiny library to show a Hue picker for user!
 
+- **Small**. 1.11 Kb (minified and gzipped). No deps. Controlled by [Size Limit](https://github.com/ai/size-limit).
+- **Framework agnostic**. Works with TypeScript and any framework: React, Vue, Preact, Solid and Svelte!
+
+<a href="https://evilmartians.com/?utm_source=simple-hue-picker">
+  <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg"
+       alt="Sponsored by Evil Martians" width="236" height="54">
+</a>
+
+## Install
+
+```
+npm install simple-hue-picker
+```
 
 # Usage
 
@@ -20,12 +34,27 @@ It accepts all the same props as a usual `<input />`. The selected value is stor
 <hue-picker onChange={(e) => setValue(e.detail)} />
 ```
 
+## Usage with React
+
+React is the least Web Components friendly, because of its Synthetic events. But have no fear: we ship a special React component for you, that does all the dirty work for you!
+
+```tsx
+import { HuePicker } from "simple-hue-picker/react";
+
+function App() {
+  const [selected, setSelected] = useState("120");
+
+  return <HuePicker step={10} value={selected} onChange={newValue => setSelected(newValue)} />;
+};
+```
+
 ## Usage with Vue
 
 Vue is Web Components friendly, so usage is pretty simple:
 
 ```vue
 <script setup lang="ts">
+import type { HueChangeEvent } from "simple-hue-picker/react";
 import { ref } from 'vue'
 
 const selectedHue = ref('120')
@@ -35,7 +64,7 @@ const selectedHue = ref('120')
   <div>
     {{selectedHue}}
   </div>
-  <hue-picker :value="selectedHue" @change="(e: CustomEvent<string>) => selectedHue = e.detail">
+  <hue-picker :value="selectedHue" @change="(e: HueChangeEvent) => selectedHue = e.detail">
   </hue-picker>  
 </template>
 ```
@@ -70,39 +99,35 @@ function App() {
 }
 ```
 
-## Usage with React
+## Usage with Svelte
 
-React is the least Web Components friendly, because of its Synthetic events. So, if you write `onChange={e => {...}}` in Preact, it uses native DOM events, so you get an event handler for custom elements as well. In React you need to manually call `.addEventListener`.
+Svelte is Web Components friendly, but as of my knowledge it doesn't provide any way for a library author to define types for Web Components. Therefore, it's a bit of a manual work and doesn't work with two-way data binding:
 
-We may add this to the library's core in future, but for now you can just use this simple snippet:
+```html
+<script lang="ts">
+  import type { HueChangeEvent } from "simple-hue-picker";
+
+  let value = "120";
+  const onChange = (e: HueChangeEvent) => (value = e.detail);
+</script>
+
+<hue-picker {value} step="10" on:change={onChange} />
+```
+
+## Usage with SSR
+
+This library is powered by Web Components. If you try to initialize it in Node environment, you'll get something like **"HTMLElement is not defined"**. Since this component doesn't provide any critical functionality, feel free to use tools that your meta-framework provide you with that allow you to bypass the SSR step for this component. For example, for **Next.js** it would be something like this:
 
 ```tsx
-import React from "react";
-import "simple-hue-picker";
-import { HuePicker, HueChangeEventHandler } from "simple-hue-picker";
+import dynamic from "next/dynamic";
 
-type Props = Omit<JSX.IntrinsicElements["input"], "onChange"> & {
-  onChange?: (newHue?: string) => void;
-};
+const HuePicker = dynamic(() => import("simple-hue-picker/react"), {
+  ssr: false,
+});
 
-export const Picker = ({ onChange, ...rest }: Props) => {
-  const ref = React.useRef<HuePicker | null>(null);
+function App() {
+  const [selected, setSelected] = useState("120");
 
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const handleChange: HueChangeEventHandler = (e) => {
-      onChange?.(e.detail);
-    };
-
-    el.addEventListener("change", handleChange);
-
-    return () => {
-      el.removeEventListener("change", handleChange);
-    };
-  }, [onChange]);
-
-  return <hue-picker ref={ref} {...rest}></hue-picker>;
+  return <HuePicker step={10} value={selected} onChange={newValue => setSelected(newValue)} />;
 };
 ```

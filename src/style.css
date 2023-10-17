@@ -5,21 +5,31 @@ div {
 }
 
 svg {
-  border-radius: 8px;
+  border-radius: 4px;
   width: 100%;
   height: 100%;
 }
 
 input {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  right: -0.5rem;
-  left: -0.5rem;
-  border-radius: 0.375rem;
+  inset: -4px -8px;
+  border-radius: 4px;
   background-color: transparent;
   appearance: none;
   cursor: pointer;
+}
+
+input:focus-visible {
+  outline-offset: 2px;
+  outline-color: oklch(80% 0.2 var(--hue));
+}
+
+input:active::-webkit-slider-thumb {
+  transform: scale(2);
+}
+
+input:active::-moz-range-thumb {
+  transform: scale(2);
 }
 
 input::-moz-range-thumb {
@@ -29,7 +39,8 @@ input::-moz-range-thumb {
   cursor: grab;
   background: oklch(80% 0.2 var(--hue));
   border: 1px solid #fff;
-  border-radius: 3px;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
 }
 
 input::-webkit-slider-thumb {
@@ -39,5 +50,6 @@ input::-webkit-slider-thumb {
   cursor: grab;
   background: oklch(80% 0.2 var(--hue));
   border: 1px solid #fff;
-  border-radius: 3px;
+  border-radius: 4px;
+  transition: transform 0.3s ease;
 }

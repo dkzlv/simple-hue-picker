@@ -1,30 +1,65 @@
 {
   "name": "simple-hue-picker",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "type": "module",
   "author": "Dan Kozlov <d.kzlv.ru@gmail.com>",
   "license": "MIT",
   "files": [
     "dist"
   ],
-  "main": "./dist/simple-hue-picker.umd.cjs",
-  "module": "./dist/simple-hue-picker.js",
+  "main": "./dist/main.cjs",
+  "module": "./dist/main.js",
   "types": "./dist/main.d.ts",
   "exports": {
     ".": {
       "types": "./dist/main.d.ts",
-      "import": "./dist/simple-hue-picker.js",
-      "require": "./dist/simple-hue-picker.umd.cjs"
+      "import": "./dist/main.js",
+      "require": "./dist/main.cjs"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "require": "./dist/react.cjs"
     }
   },
+  "size-limit": [
+    {
+      "name": "Core",
+      "import": {
+        "./dist/main.js": "{ HuePicker }"
+      },
+      "limit": "1110 B"
+    },
+    {
+      "name": "React + Core",
+      "import": {
+        "./dist/react.js": "*"
+      },
+      "limit": "1500 B"
+    }
+  ],
   "scripts": {
     "dev": "vite",
     "build": "node src/compileTemplate.cjs && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:size": "size-limit"
   },
   "devDependencies": {
+    "@size-limit/preset-small-lib": "^9.0.0",
+    "@types/react": "^18.2.28",
+    "react": "^18.2.0",
+    "size-limit": "^9.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
+    "vite-plugin-dts": "^3.6.0",
     "vite-plugin-static-copy": "^0.17.0"
+  },
+  "peerDependencies": {
+    "react": "^16.0.0 || ^17.0.0 || ^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
   }
 }
