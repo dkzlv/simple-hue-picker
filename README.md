@@ -1,5 +1,7 @@
 # Simple Hue Picker
 
+![](cover.png)
+
 A tiny library to show a Hue picker for user!
 
 - **Small**. 1.11 Kb (minified and gzipped). No deps. Controlled by [Size Limit](https://github.com/ai/size-limit).
