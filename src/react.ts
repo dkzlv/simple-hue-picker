@@ -3,27 +3,31 @@ import "./main";
 
 import React from "react";
 
-type Props = Omit<JSX.IntrinsicElements["input"], "onChange"> & {
-  onChange?: (newHue?: string) => void;
+type Props = Omit<JSX.IntrinsicElements["input"], "onChange" | "onInput"> & {
+  onChange?: HueChangeEventHandler;
+  onInput?: HueChangeEventHandler;
 };
 
-export default function HuePicker({ onChange, ...rest }: Props) {
-  const ref = React.useRef<IHuePicker | null>(null);
-
+const useEvent = (
+  ref: React.MutableRefObject<IHuePicker | null>,
+  ev: "input" | "change",
+  onEvent?: HueChangeEventHandler
+) => {
   React.useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !onEvent) return;
 
-    const handleChange: HueChangeEventHandler = (e) => {
-      onChange?.(e.detail);
-    };
+    el.addEventListener(ev, onEvent);
 
-    el.addEventListener("change", handleChange);
+    return () => el.removeEventListener(ev, onEvent);
+  }, [ev, onEvent]);
+};
 
-    return () => {
-      el.removeEventListener("change", handleChange);
-    };
-  }, [onChange]);
+export default function HuePicker({ onChange, onInput, ...rest }: Props) {
+  const ref = React.useRef<IHuePicker | null>(null);
+
+  useEvent(ref, "change", onChange);
+  useEvent(ref, "input", onInput);
 
   return React.createElement("hue-picker", { ref: ref, ...rest });
 }

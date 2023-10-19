@@ -1,14 +1,14 @@
 export declare class HuePicker extends HTMLInputElement {
   addEventListener(
     type: "change" | "input",
-    listener: (event: CustomEvent<string>) => void
+    listener: (event: CustomEvent<number>) => void
   ): void;
   removeEventListener(
     type: "change" | "input",
-    listener: (event: CustomEvent<string>) => void
+    listener: (event: CustomEvent<number>) => void
   ): void;
 }
-export type HueChangeEvent = CustomEvent<string>;
+export type HueChangeEvent = CustomEvent<number>;
 export type HueChangeEventHandler = (event: HueChangeEvent) => void;
 
 // React //

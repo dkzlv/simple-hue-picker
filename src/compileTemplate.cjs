@@ -34,7 +34,7 @@ const template = `<svg>
   <defs>${colorsTemplate}</defs>
   <rect width="100%" height="20" fill="url(#g)" />
 </svg>
-<input type="range" min="0" max="360" aria-label="Hue picker" />`;
+<input value="0" type="range" min="0" max="360" aria-label="Hue picker" />`;
 
 const outputPath = path.join(__dirname, "template.js");
 

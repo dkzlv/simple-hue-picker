@@ -10,12 +10,20 @@
 
 <body style="padding: 3rem;">
   <h1>Open console to see events</h1>
-  <p>Default state:</p>
+  <p>Default state (<code>input</code> event):</p>
   <div style="margin-bottom: 3rem">
-    <hue-picker oninput="(function(e){console.log(e.detail)})(event)"></hue-picker>
+    <hue-picker id="picker1"></hue-picker>
   </div>
-  <p>With <code>step</code> and a preset value:</p>
-  <hue-picker step="20" value="150" name="qwert" onchange="(function(e){console.log(e.detail)})(event)"></hue-picker>
+  <p>With <code>step</code> and a preset value (<code>change</code> event):</p>
+  <hue-picker id="picker2" step="20" value="150" name="qwert"></hue-picker>
+
+  <script>
+    const picker1 = document.getElementById('picker1'),
+      picker2 = document.getElementById('picker2');
+
+    picker1.addEventListener('input', (e) => console.log('picker 1, input', e))
+    picker2.addEventListener('change', (e) => console.log('picker 2, change', e))
+  </script>
 </body>
 
 </html>

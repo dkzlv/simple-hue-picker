@@ -35,10 +35,12 @@ export class HuePicker extends HTMLElement {
 
   handleAttributeChange(name, newValue) {
     if (name === "value") this.updateInputValue(newValue);
-    else if (this.inputElement) {
-      this.inputElement.setAttribute(name, newValue);
-      this.outsideInput.setAttribute(name, newValue);
-    }
+    else if (this.inputElement) this.setSyncAttrs(name, newValue);
+  }
+
+  setSyncAttrs(name, value) {
+    this.inputElement.setAttribute(name, value);
+    if (name !== "id") this.outsideInput.setAttribute(name, value);
   }
 
   render() {
@@ -51,8 +53,7 @@ export class HuePicker extends HTMLElement {
 
     this.inputElement = rootDiv.querySelector("input");
     for (const attr of this.attributes) {
-      this.inputElement.setAttribute(attr.name, attr.value);
-      this.outsideInput.setAttribute(attr.name, attr.value);
+      this.setSyncAttrs(attr.name, attr.value);
     }
     this.shadowRoot.appendChild(rootDiv);
 
@@ -66,7 +67,7 @@ export class HuePicker extends HTMLElement {
 
   forwardEvent(type) {
     this.inputElement.addEventListener(type, (e) => {
-      const newHue = e.target.value;
+      const newHue = e.currentTarget.valueAsNumber;
       this.updateInputValue(newHue);
       this.dispatchEvent(
         new CustomEvent(type, {
@@ -85,10 +86,11 @@ export class HuePicker extends HTMLElement {
 
   updateInputValue(newHue) {
     if (!this.inputElement || !this.outsideInput) return;
-    this.outsideInput.value = newHue;
-
-    this.inputElement.value = newHue;
-    this.inputElement.style.setProperty("--hue", newHue);
+    if (this.outsideInput.value !== newHue) {
+      this.outsideInput.value = newHue;
+      this.inputElement.style.setProperty("--hue", newHue);
+      this.setAttribute("value", newHue);
+    }
   }
 }
 

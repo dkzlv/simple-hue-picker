@@ -2,4 +2,4 @@ export default `<svg>
   <defs><linearGradient id="g"><stop offset="0%" stop-color="#f8a49e" /><stop offset="7%" stop-color="#f3aa85" /><stop offset="13%" stop-color="#e6b374" /><stop offset="20%" stop-color="#d1be71" /><stop offset="27%" stop-color="#b5c87d" /><stop offset="33%" stop-color="#96cf95" /><stop offset="40%" stop-color="#78d3b1" /><stop offset="47%" stop-color="#66d2ce" /><stop offset="53%" stop-color="#69cee7" /><stop offset="60%" stop-color="#80c7f8" /><stop offset="67%" stop-color="#9dbdff" /><stop offset="73%" stop-color="#bab4fb" /><stop offset="80%" stop-color="#d3abed" /><stop offset="87%" stop-color="#e7a5d6" /><stop offset="93%" stop-color="#f3a3bb" /></linearGradient></defs>
   <rect width="100%" height="20" fill="url(#g)" />
 </svg>
-<input type="range" min="0" max="360" aria-label="Hue picker" />`;
+<input value="0" type="range" min="0" max="360" aria-label="Hue picker" />`;

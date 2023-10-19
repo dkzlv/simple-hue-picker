@@ -4,7 +4,7 @@
 
 A tiny library to show a Hue picker for user!
 
-- **Small**. 1.19 Kb (minified and gzipped). No deps. Controlled by [Size Limit](https://github.com/ai/size-limit).
+- **Small**. 1.25 Kb (minified and gzipped). No deps. Controlled by [Size Limit](https://github.com/ai/size-limit).
 - **Framework agnostic**. Works with TypeScript and any framework: React, Vue, Preact, Solid and Svelte!
 
 <a href="https://evilmartians.com/?utm_source=simple-hue-picker">
@@ -32,7 +32,7 @@ As soon as you do this, you'll have a new globally-available component called `<
 
 It accepts all the same props as a usual `<input />`. The selected value is stored in, as usual, `value`.
 
-The lib exposes 2 events: `change` and `input`, both fire a `CustomEvent<string>`. Be aware of the difference between those two: `change` only fires when the value is *commited* (the mouse is released), while `input` is realtime. 
+The lib exposes 2 events: `change` and `input`, both fire a `CustomEvent<number>`. Be aware of the difference between those two: `change` only fires when the value is *commited* (the mouse is released), while `input` is realtime. 
 
 This is what a typical even handler would look like:
 
@@ -48,9 +48,9 @@ React is the least Web Components friendly, because of its Synthetic events. But
 import { HuePicker } from "simple-hue-picker/react";
 
 function App() {
-  const [selected, setSelected] = useState("120");
+  const [selected, setSelected] = useState(120);
 
-  return <HuePicker step={10} value={selected} onInput={newValue => setSelected(newValue)} />;
+  return <HuePicker step={10} value={selected} onInput={e => setSelected(e.detail)} />;
 };
 ```
 
@@ -63,7 +63,7 @@ Vue is Web Components friendly, so usage is pretty simple:
 import type { HueChangeEvent } from "simple-hue-picker/react";
 import { ref } from 'vue'
 
-const selectedHue = ref('120')
+const selectedHue = ref(120)
 </script>
 
 <template>
@@ -81,7 +81,7 @@ Preact is Web Components friendly, so usage is extremely simple:
 
 ```tsx
 export function App() {
-  const [selected, setSelected] = useState("150");
+  const [selected, setSelected] = useState(150);
   return <hue-picker value={selected} onInput={e => setSelected(e.detail)}></hue-picker>
 }
 ```
@@ -92,7 +92,7 @@ Solid is Web Components friendly, so usage is simple, but you need to explicitly
 
 ```tsx
 function App() {
-  const [selected, setSelected] = createSignal("120");
+  const [selected, setSelected] = createSignal(120);
 
   return (
     <hue-picker
@@ -113,7 +113,7 @@ Svelte is Web Components friendly, but as of my knowledge it doesn't provide any
 <script lang="ts">
   import type { HueChangeEvent } from "simple-hue-picker";
 
-  let value = "120";
+  let value = 120;
   const onInput = (e: HueChangeEvent) => (value = e.detail);
 </script>
 
@@ -132,9 +132,9 @@ const HuePicker = dynamic(() => import("simple-hue-picker/react"), {
 });
 
 function App() {
-  const [selected, setSelected] = useState("120");
+  const [selected, setSelected] = useState(120);
 
-  return <HuePicker step={10} value={selected} onInput={newValue => setSelected(newValue)} />;
+  return <HuePicker step={10} value={selected} onInput={e => setSelected(e.detail)} />;
 };
 ```
 
