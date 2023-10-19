@@ -1,10 +1,10 @@
 export declare class HuePicker extends HTMLInputElement {
   addEventListener(
-    type: "change",
+    type: "change" | "input",
     listener: (event: CustomEvent<string>) => void
   ): void;
   removeEventListener(
-    type: "change",
+    type: "change" | "input",
     listener: (event: CustomEvent<string>) => void
   ): void;
 }
@@ -25,7 +25,8 @@ declare global {
 
 // Preact //
 interface HuePickerAttributes extends preact.JSX.HTMLAttributes<HuePicker> {
-  onChange: (event: CustomEvent<string>) => void;
+  onChange: HueChangeEventHandler;
+  onInput: HueChangeEventHandler;
 }
 declare module "preact" {
   namespace JSX {
@@ -36,8 +37,12 @@ declare module "preact" {
 }
 
 // Solid.js //
-type SolidElement = Omit<InputHTMLAttributes<HuePicker>, "onChange"> & {
+type SolidElement = Omit<
+  InputHTMLAttributes<HuePicker>,
+  "onChange" | "onInput"
+> & {
   onChange?: HueChangeEventHandler;
+  onInput?: HueChangeEventHandler;
 };
 declare module "solid-js" {
   namespace JSX {
@@ -53,6 +58,7 @@ declare module "vue" {
     "hue-picker": {
       emits: {
         change: HueChangeEventHandler;
+        input: HueChangeEventHandler;
       };
     };
   }

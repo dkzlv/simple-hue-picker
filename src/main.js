@@ -19,6 +19,7 @@ export class HuePicker extends HTMLElement {
   disconnectedCallback() {
     // Stop observing
     this.observer.disconnect();
+    this.outsideInput.remove();
   }
 
   handleAttributeChanges(mutations) {
@@ -34,16 +35,24 @@ export class HuePicker extends HTMLElement {
 
   handleAttributeChange(name, newValue) {
     if (name === "value") this.updateInputValue(newValue);
-    else if (this.inputElement) this.inputElement.setAttribute(name, newValue);
+    else if (this.inputElement) {
+      this.inputElement.setAttribute(name, newValue);
+      this.outsideInput.setAttribute(name, newValue);
+    }
   }
 
   render() {
     const rootDiv = document.createElement("div");
     rootDiv.innerHTML = template;
 
+    this.outsideInput = document.createElement("input");
+    this.outsideInput.type = "hidden";
+    this.parentNode.insertBefore(this.outsideInput, this.nextSibling);
+
     this.inputElement = rootDiv.querySelector("input");
     for (const attr of this.attributes) {
       this.inputElement.setAttribute(attr.name, attr.value);
+      this.outsideInput.setAttribute(attr.name, attr.value);
     }
     this.shadowRoot.appendChild(rootDiv);
 
@@ -55,12 +64,12 @@ export class HuePicker extends HTMLElement {
     this.updateInputValue(this.getAttribute("value") || "0");
   }
 
-  attachEventHandlers() {
-    this.inputElement.addEventListener("input", (e) => {
+  forwardEvent(type) {
+    this.inputElement.addEventListener(type, (e) => {
       const newHue = e.target.value;
       this.updateInputValue(newHue);
       this.dispatchEvent(
-        new CustomEvent("change", {
+        new CustomEvent(type, {
           detail: newHue,
           bubbles: true,
           composed: true,
@@ -69,8 +78,15 @@ export class HuePicker extends HTMLElement {
     });
   }
 
+  attachEventHandlers() {
+    this.forwardEvent("input");
+    this.forwardEvent("change");
+  }
+
   updateInputValue(newHue) {
-    if (!this.inputElement) return;
+    if (!this.inputElement || !this.outsideInput) return;
+    this.outsideInput.value = newHue;
+
     this.inputElement.value = newHue;
     this.inputElement.style.setProperty("--hue", newHue);
   }

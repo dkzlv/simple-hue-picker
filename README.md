@@ -4,7 +4,7 @@
 
 A tiny library to show a Hue picker for user!
 
-- **Small**. 1.11 Kb (minified and gzipped). No deps. Controlled by [Size Limit](https://github.com/ai/size-limit).
+- **Small**. 1.19 Kb (minified and gzipped). No deps. Controlled by [Size Limit](https://github.com/ai/size-limit).
 - **Framework agnostic**. Works with TypeScript and any framework: React, Vue, Preact, Solid and Svelte!
 
 <a href="https://evilmartians.com/?utm_source=simple-hue-picker">
@@ -30,10 +30,14 @@ import 'simple-hue-picker';
 
 As soon as you do this, you'll have a new globally-available component called `<hue-picker />`. Under the hood the whole component is just an `<input type="range" />` and an SVG that gives you the background.
 
-It accepts all the same props as a usual `<input />`. The selected value is stored in, as usual, `value`. It only exposes a single event: `change`. It fires a `CustomEvent<string>`, so this is what a typical even handler would look like:
+It accepts all the same props as a usual `<input />`. The selected value is stored in, as usual, `value`.
+
+The lib exposes 2 events: `change` and `input`, both fire a `CustomEvent<string>`. Be aware of the difference between those two: `change` only fires when the value is *commited* (the mouse is released), while `input` is realtime. 
+
+This is what a typical even handler would look like:
 
 ```tsx
-<hue-picker onChange={(e) => setValue(e.detail)} />
+<hue-picker onInput={(e) => setValue(e.detail)} />
 ```
 
 ## Usage with React
@@ -46,7 +50,7 @@ import { HuePicker } from "simple-hue-picker/react";
 function App() {
   const [selected, setSelected] = useState("120");
 
-  return <HuePicker step={10} value={selected} onChange={newValue => setSelected(newValue)} />;
+  return <HuePicker step={10} value={selected} onInput={newValue => setSelected(newValue)} />;
 };
 ```
 
@@ -66,7 +70,7 @@ const selectedHue = ref('120')
   <div>
     {{selectedHue}}
   </div>
-  <hue-picker :value="selectedHue" @change="(e: HueChangeEvent) => selectedHue = e.detail">
+  <hue-picker :value="selectedHue" @input="(e: HueChangeEvent) => selectedHue = e.detail">
   </hue-picker>  
 </template>
 ```
@@ -78,7 +82,7 @@ Preact is Web Components friendly, so usage is extremely simple:
 ```tsx
 export function App() {
   const [selected, setSelected] = useState("150");
-  return <hue-picker value={selected} onChange={e => setSelected(e.detail)}></hue-picker>
+  return <hue-picker value={selected} onInput={e => setSelected(e.detail)}></hue-picker>
 }
 ```
 
@@ -95,7 +99,7 @@ function App() {
       step={10}
       // Notice the attr:
       attr:value={selected()}
-      onChange={(e) => setSelected(e.detail)}
+      onInput={(e) => setSelected(e.detail)}
     ></hue-picker>
   );
 }
@@ -110,10 +114,10 @@ Svelte is Web Components friendly, but as of my knowledge it doesn't provide any
   import type { HueChangeEvent } from "simple-hue-picker";
 
   let value = "120";
-  const onChange = (e: HueChangeEvent) => (value = e.detail);
+  const onInput = (e: HueChangeEvent) => (value = e.detail);
 </script>
 
-<hue-picker {value} step="10" on:change={onChange} />
+<hue-picker {value} step="10" on:input={onChange} />
 ```
 
 ## Usage with SSR
@@ -130,6 +134,12 @@ const HuePicker = dynamic(() => import("simple-hue-picker/react"), {
 function App() {
   const [selected, setSelected] = useState("120");
 
-  return <HuePicker step={10} value={selected} onChange={newValue => setSelected(newValue)} />;
+  return <HuePicker step={10} value={selected} onInput={newValue => setSelected(newValue)} />;
 };
 ```
+
+## Usage with forms
+
+When you use an input inside a Web Component, it doesn't propagate its value in `FormData` when you submit a form. We solve this by rendering an `<input type="hidden" />` with the provided `name`, and sync its value with the hue-picker.
+
+TLDR: all is covered, use `name` as usual 😁

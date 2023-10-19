@@ -12,10 +12,10 @@
   <h1>Open console to see events</h1>
   <p>Default state:</p>
   <div style="margin-bottom: 3rem">
-    <hue-picker onchange="(function(e){console.log(e.detail)})(event)"></hue-picker>
+    <hue-picker oninput="(function(e){console.log(e.detail)})(event)"></hue-picker>
   </div>
   <p>With <code>step</code> and a preset value:</p>
-  <hue-picker step="20" value="150" onchange="(function(e){console.log(e.detail)})(event)"></hue-picker>
+  <hue-picker step="20" value="150" name="qwert" onchange="(function(e){console.log(e.detail)})(event)"></hue-picker>
 </body>
 
 </html>

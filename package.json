@@ -1,6 +1,6 @@
 {
   "name": "simple-hue-picker",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "type": "module",
   "author": "Dan Kozlov <d.kzlv.ru@gmail.com>",
   "license": "MIT",
@@ -28,14 +28,14 @@
       "import": {
         "./dist/main.js": "{ HuePicker }"
       },
-      "limit": "1110 B"
+      "limit": "1190 B"
     },
     {
       "name": "React + Core",
       "import": {
         "./dist/react.js": "*"
       },
-      "limit": "1500 B"
+      "limit": "1573 B"
     }
   ],
   "scripts": {
